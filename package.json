@@ -23,5 +23,8 @@
     "eslint": "^7.5.0",
     "eslint-config-wikimedia": "^0.16.2",
     "jest": "^26.1.0"
+  },
+  "dependencies": {
+    "sparqljs": "^3.0.3"
   }
 }
