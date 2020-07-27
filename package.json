@@ -1,0 +1,19 @@
+{
+  "name": "queripulator",
+  "version": "1.0.0",
+  "description": "Query Manipulator Prototype",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wmde/queripulator.git"
+  },
+  "author": "The Wikidata team",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/wmde/queripulator/issues"
+  },
+  "homepage": "https://github.com/wmde/queripulator#readme"
+}
