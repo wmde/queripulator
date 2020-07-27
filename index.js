@@ -3,6 +3,7 @@
 const http = require( 'http' );
 const https = require( 'https' );
 
+const OptimizingHandler = require( './lib/OptimizingHandler' );
 const QueryHandlerChain = require( './lib/QueryHandlerChain' );
 const SpecificItemPropertyPairQueryHandler = require( './lib/SpecificItemPropertyPairQueryHandler' );
 
@@ -10,6 +11,7 @@ const port = process.argv[ 2 ] || 8080;
 
 const queryHandlerChain = new QueryHandlerChain( [
 	new SpecificItemPropertyPairQueryHandler(),
+	new OptimizingHandler(),
 ] );
 
 function isJsonType( mimeType ) {
