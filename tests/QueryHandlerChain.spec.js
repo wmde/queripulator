@@ -1,3 +1,5 @@
+'use strict';
+
 const QueryHandlerChain = require( '../lib/QueryHandlerChain' );
 const ComplexQueryResult = require( '../lib/ComplexQueryResult' );
 const SimpleQueryResult = require( '../lib/SimpleQueryResult' );
