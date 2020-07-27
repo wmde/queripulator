@@ -48,4 +48,13 @@ describe( 'OptimizingHandler', () => {
 		expect( actual ).toBe( expected );
 	} );
 
+	it( 'does not modify the input parsedQuery', () => {
+		const query = 'SELECT * WHERE { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 2020) }';
+		const parsedQuery = parser.parse( query );
+
+		handler.handle( query, parsedQuery );
+
+		expect( parsedQuery ).toStrictEqual( parser.parse( query ) );
+	} );
+
 } );
