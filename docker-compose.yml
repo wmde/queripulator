@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  node:
+    image: 'node:12'
+    volumes:
+      - '~/.npm:/.npm'
+      - './:/app'
+    working_dir: /app
+    command: npm run dev
