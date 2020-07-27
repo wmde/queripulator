@@ -18,8 +18,6 @@ describe( 'OptimizingHandler', () => {
 		'SELECT ?item WHERE { ?item wdt:P569 ?dob; wdt:P570 ?dod. FILTER(YEAR(?dob) = YEAR(?dod)) }',
 		'SELECT ?item WHERE { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 10000000000000000) }',
 		// the following *could* be optimized, just not by the current implementation
-		'SELECT * WHERE { { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 2020) } UNION {} }',
-		'SELECT * WHERE { OPTIONAL { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 2020) } }',
 		'SELECT * WHERE { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) > 2020) }',
 		'SELECT * WHERE { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 2020 && MONTH(?dob) = 7) }',
 	] )( 'ignores query it cannot optimize: %s', ( query ) => {
@@ -34,6 +32,14 @@ describe( 'OptimizingHandler', () => {
 		[
 			'SELECT * WHERE { ?item wdt:P569 ?dob. FILTER(2020 = YEAR(?dob)) }',
 			'SELECT * WHERE { ?item wdt:P569 ?dob. FILTER((?dob >= "2020-00-00"^^xsd:dateTime) && (?dob < "2021-00-00"^^xsd:dateTime)) }',
+		],
+		[
+			'SELECT * WHERE { { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 2020) } UNION {} }',
+			'SELECT * WHERE { { ?item wdt:P569 ?dob. FILTER((?dob >= "2020-00-00"^^xsd:dateTime) && (?dob < "2021-00-00"^^xsd:dateTime)) } UNION { } }',
+		],
+		[
+			'SELECT * WHERE { OPTIONAL { ?item wdt:P569 ?dob. FILTER(YEAR(?dob) = 2020) } }',
+			'SELECT * WHERE { OPTIONAL { ?item wdt:P569 ?dob. FILTER((?dob >= "2020-00-00"^^xsd:dateTime) && (?dob < "2021-00-00"^^xsd:dateTime)) } }',
 		],
 	] )( 'optimizes %s into %s', ( query, expected ) => {
 		const result = handler.handle( query, parser.parse( query ) );
