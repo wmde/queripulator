@@ -1,8 +1,7 @@
 'use strict';
 
 const QueryHandlerChain = require( '../lib/QueryHandlerChain' );
-const ComplexQueryResult = require( '../lib/ComplexQueryResult' );
-const SimpleQueryResult = require( '../lib/SimpleQueryResult' );
+const WdqsRequest = require( '../lib/WdqsRequest' );
 
 describe( 'QueryHandlerChain', () => {
 
@@ -10,11 +9,13 @@ describe( 'QueryHandlerChain', () => {
 
 	it( 'falls back to complex query by default', () => {
 		const handler = new QueryHandlerChain( [] );
-		expect( handler.getResult( SOME_QUERY ) ).toBeInstanceOf( ComplexQueryResult );
+		const result = handler.getResult( SOME_QUERY );
+		expect( result ).toBeInstanceOf( WdqsRequest );
+		expect( result.extraResponseHeaders ).toStrictEqual( {} );
 	} );
 
 	it( 'delegates to a matching handler if possible', () => {
-		const expectedResult = new SimpleQueryResult();
+		const expectedResult = { type: 'custom' };
 		const stubHandler = {
 			handle: () => expectedResult,
 		};

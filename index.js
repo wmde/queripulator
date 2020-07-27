@@ -12,13 +12,22 @@ const queryHandlerChain = new QueryHandlerChain( [
 	new SpecificItemPropertyPairQueryHandler(),
 ] );
 
+function isJsonType( mimeType ) {
+	switch ( mimeType ) {
+		case 'application/sparql-results+json': return true;
+		case 'application/json': return true;
+		default: return false;
+	}
+}
+
 http.createServer( function ( clientRequest, clientResponse ) {
 	const extraResponseHeaders = {};
-	if ( clientRequest.method === 'GET' ) {
+	if ( clientRequest.method === 'GET' && isJsonType( clientRequest.headers.accept ) ) {
 		const url = new URL( clientRequest.url, 'http://localhost' );
 		if ( url.pathname === '/sparql' && url.searchParams.has( 'query' ) ) {
 			const result = queryHandlerChain.getResult( url.searchParams.get( 'query' ) );
-			extraResponseHeaders[ 'X-Simple-Query' ] = result.isSimple() ? 'true' : 'false';
+			result.respond( clientRequest, clientResponse );
+			return;
 		}
 	}
 

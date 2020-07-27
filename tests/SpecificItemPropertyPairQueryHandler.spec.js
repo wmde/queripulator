@@ -3,7 +3,7 @@
 const SparqlParser = require( 'sparqljs' ).Parser;
 const { allNamespaces } = require( '../lib/rdfNamespaces' );
 const SpecificItemPropertyPairQueryHandler = require( '../lib/SpecificItemPropertyPairQueryHandler' );
-const SimpleQueryResult = require( '../lib/SimpleQueryResult' );
+const WdqsRequest = require( '../lib/WdqsRequest' );
 
 describe( 'SpecificItemPropertyPairQueryHandler', () => {
 
@@ -14,7 +14,10 @@ describe( 'SpecificItemPropertyPairQueryHandler', () => {
 		const handler = new SpecificItemPropertyPairQueryHandler();
 		const result = handler.handle( query, parser.parse( query ) );
 		expect( result ).toBeTruthy();
-		expect( result ).toBeInstanceOf( SimpleQueryResult );
+		expect( result ).toBeInstanceOf( WdqsRequest );
+		expect( result.extraResponseHeaders ).toStrictEqual( {
+			'X-Simple-Query': 'true',
+		} );
 	} );
 
 	it.each( [
