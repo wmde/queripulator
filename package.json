@@ -4,7 +4,7 @@
   "description": "Query Manipulator Prototype",
   "main": "index.js",
   "scripts": {
-    "test": "eslint ."
+    "test": "eslint . && jest ."
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,7 @@
   "homepage": "https://github.com/wmde/queripulator#readme",
   "devDependencies": {
     "eslint": "^7.5.0",
-    "eslint-config-wikimedia": "^0.16.2"
+    "eslint-config-wikimedia": "^0.16.2",
+    "jest": "^26.1.0"
   }
 }
