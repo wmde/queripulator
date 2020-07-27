@@ -4,10 +4,13 @@ const http = require( 'http' );
 const https = require( 'https' );
 
 const QueryHandlerChain = require( './lib/QueryHandlerChain' );
+const SpecificItemPropertyPairQueryHandler = require( './lib/SpecificItemPropertyPairQueryHandler' );
 
 const port = process.argv[ 2 ] || 8080;
 
-const queryHandlerChain = new QueryHandlerChain( [] );
+const queryHandlerChain = new QueryHandlerChain( [
+	new SpecificItemPropertyPairQueryHandler(),
+] );
 
 http.createServer( function ( clientRequest, clientResponse ) {
 	const extraResponseHeaders = {};
