@@ -16,8 +16,7 @@ describe( 'QueryHandlerChain', () => {
 	it( 'delegates to a matching handler if possible', () => {
 		const expectedResult = new SimpleQueryResult();
 		const stubHandler = {
-			canHandle: () => true,
-			getResult: () => expectedResult,
+			handle: () => expectedResult,
 		};
 		const handler = new QueryHandlerChain( [ stubHandler ] );
 
