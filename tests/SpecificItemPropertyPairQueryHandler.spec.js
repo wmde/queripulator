@@ -9,10 +9,12 @@ describe( 'SpecificItemPropertyPairQueryHandler', () => {
 
 	const parser = new SparqlParser( { prefixes: allNamespaces } );
 
-	it( 'can handle queries with a single triple for values of a specific item property pair', () => {
+	it( 'handles queries with a single triple for values of a specific item property pair', () => {
 		const query = 'SELECT ?values { wd:Q42 wdt:P31 ?values. }';
 		const handler = new SpecificItemPropertyPairQueryHandler();
-		expect( handler.canHandle( query, parser.parse( query ) ) ).toBeTruthy();
+		const result = handler.handle( query, parser.parse( query ) );
+		expect( result ).toBeTruthy();
+		expect( result ).toBeInstanceOf( SimpleQueryResult );
 	} );
 
 	it.each( [
@@ -21,12 +23,7 @@ describe( 'SpecificItemPropertyPairQueryHandler', () => {
 		'SELECT ?values { wd:Q42 wdt:P106 ?values. wd:Q892 wdt:P106 ?values. }',
 	] )( 'cannot handle other queries: %s', ( query ) => {
 		const handler = new SpecificItemPropertyPairQueryHandler();
-		expect( handler.canHandle( query, parser.parse( query ) ) ).toBeFalsy();
-	} );
-
-	it( 'is a simple query', () => {
-		expect( ( new SpecificItemPropertyPairQueryHandler() ).getResult() )
-			.toBeInstanceOf( SimpleQueryResult );
+		expect( handler.handle( query, parser.parse( query ) ) ).toBeFalsy();
 	} );
 
 } );
