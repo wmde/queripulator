@@ -1,23 +1,25 @@
+'use strict';
+
 const http = require( 'http' );
 const https = require( 'https' );
 
 const port = process.argv[ 2 ] || 8080;
 
-http.createServer( function( client_request, client_response ) {
-	const wdqs_request = https.request(
+http.createServer( function ( clientRequest, clientResponse ) {
+	const wdqsRequest = https.request(
 		'https://query.wikidata.org',
 		{
-			path: client_request.url,
-			method: client_request.method,
+			path: clientRequest.url,
+			method: clientRequest.method,
 			headers: {
-				...client_request.headers,
+				...clientRequest.headers,
 				host: 'query.wikidata.org',
 			},
 		},
-		function( wdqs_response ) {
-			client_response.writeHead( wdqs_response.statusCode, wdqs_response.headers );
-			wdqs_response.pipe( client_response, { end: true } );
+		function ( wdqsResponse ) {
+			clientResponse.writeHead( wdqsResponse.statusCode, wdqsResponse.headers );
+			wdqsResponse.pipe( clientResponse, { end: true } );
 		},
 	);
-	client_request.pipe( wdqs_request, { end: true } );
+	clientRequest.pipe( wdqsRequest, { end: true } );
 } ).listen( port );

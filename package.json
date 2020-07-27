@@ -4,7 +4,7 @@
   "description": "Query Manipulator Prototype",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/wmde/queripulator/issues"
   },
-  "homepage": "https://github.com/wmde/queripulator#readme"
+  "homepage": "https://github.com/wmde/queripulator#readme",
+  "devDependencies": {
+    "eslint": "^7.5.0",
+    "eslint-config-wikimedia": "^0.16.2"
+  }
 }
