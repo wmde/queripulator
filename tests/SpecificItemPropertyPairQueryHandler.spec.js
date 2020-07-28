@@ -24,6 +24,7 @@ describe( 'SpecificItemPropertyPairQueryHandler', () => {
 		'ASK { wd:Q42 wdt:P31 wd:Q5. }',
 		'SELECT ?item { ?item wdt:P31 wd:Q5. }',
 		'SELECT ?values { wd:Q42 wdt:P106 ?values. wd:Q892 wdt:P106 ?values. }',
+		'SELECT * { SERVICE wikibase:label {} }',
 	] )( 'cannot handle other queries: %s', ( query ) => {
 		const handler = new SpecificItemPropertyPairQueryHandler();
 		expect( handler.handle( query, parser.parse( query ) ) ).toBeFalsy();
