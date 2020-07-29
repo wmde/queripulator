@@ -24,4 +24,23 @@ describe( 'QueryHandlerChain', () => {
 		expect( handler.getResult( SOME_QUERY ) ).toBe( expectedResult );
 	} );
 
+	it( 'catches errors from broken handlers', () => {
+		const expectedResult = { type: 'custom' };
+		const badHandler = {
+			handle() {
+				throw new Error();
+			},
+		};
+		const goodHandler = {
+			handle() {
+				return expectedResult;
+			},
+		};
+		jest.spyOn( console, 'error' ).mockImplementation( /* don’t call spied method */ );
+		const handler = new QueryHandlerChain( [ badHandler, goodHandler ] );
+
+		expect( handler.getResult( SOME_QUERY ) ).toBe( expectedResult );
+		expect( console.error ).toHaveBeenCalled();
+	} );
+
 } );
