@@ -2,7 +2,7 @@
 
 const parser = require( '../lib/sparqlParser' );
 const TruthyHandler = require( '../lib/TruthyHandler' );
-const WdqsRequest = require( '../lib/WdqsRequest' );
+const TruthyWdqsRequest = require( '../lib/TruthyWdqsRequest' );
 
 describe( 'TruthyHandler', () => {
 
@@ -14,7 +14,7 @@ describe( 'TruthyHandler', () => {
 		'ASK { ?s ?p ?o. }',
 	] )( 'detects query as truthy: %s', ( query ) => {
 		expect( handler.handle( query, parser.parse( query ) ) )
-			.toBeInstanceOf( WdqsRequest );
+			.toBeInstanceOf( TruthyWdqsRequest );
 	} );
 
 	it.each( [

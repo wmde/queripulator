@@ -2,7 +2,7 @@
 
 const parser = require( '../lib/sparqlParser' );
 const OptimizingHandler = require( '../lib/OptimizingHandler' );
-const WdqsRequest = require( '../lib/WdqsRequest' );
+const OptimizedWdqsRequest = require( '../lib/OptimizedWdqsRequest' );
 
 describe( 'OptimizingHandler', () => {
 
@@ -41,8 +41,7 @@ describe( 'OptimizingHandler', () => {
 		],
 	] )( 'optimizes %s into %s', ( query, expected ) => {
 		const result = handler.handle( query, parser.parse( query ) );
-		expect( result ).toBeInstanceOf( WdqsRequest );
-		expect( result.extraResponseHeaders ).toStrictEqual( {} );
+		expect( result ).toBeInstanceOf( OptimizedWdqsRequest );
 
 		let actual = result.query;
 		actual = actual.replace( /^PREFIX .*$/gm, '' );
