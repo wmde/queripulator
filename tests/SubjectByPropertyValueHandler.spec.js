@@ -14,6 +14,7 @@ describe( 'SubjectByPropertyValueHandler', () => {
 		[ 'INSERT {} WHERE {}' ],
 		[ 'SELECT * WHERE { ?s ?p ?o. }' ],
 		[ 'SELECT ?values { wd:Q42 wdt:P31 ?values. }' ],
+		[ 'SELECT ?item (NOW() AS ?asOf) WHERE { ?item wdt:P123 "456" }' ],
 	] )( 'does not handle query: %s', ( query ) => {
 		const handler = new SubjectByPropertyValueHandler();
 		expect( handler.handle( query, parser.parse( query ) ) ).toBeFalsy();
