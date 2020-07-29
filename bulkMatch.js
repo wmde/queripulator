@@ -32,12 +32,13 @@ const rd = readline.createInterface( {
 	output: process.stdout,
 	terminal: false,
 } );
+const handlers = defaultQueryHandlerChain.queryHandlers;
 
 const matchCounts = {};
 rd.on( 'line', ( line ) => {
 	const csvParts = line.split( ',' );
 	const query = decodeURIComponent( csvParts[ csvParts.length - 1 ].replace( /\+/g, '%20' ) );
-	const handlerForQuery = getHandlerMatchingQuery( query, defaultQueryHandlerChain.queryHandlers );
+	const handlerForQuery = getHandlerMatchingQuery( query, handlers );
 
 	matchCounts[ handlerForQuery ] = ( matchCounts[ handlerForQuery ] || 0 ) + 1;
 } );
