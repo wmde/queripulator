@@ -4,9 +4,7 @@ const fs = require( 'fs' );
 const process = require( 'process' );
 const readline = require( 'readline' );
 const parser = require( './lib/sparqlParser' );
-const OptimizingHandler = require( './lib/OptimizingHandler' );
-const SubjectByPropertyValueHandler = require( './lib/SubjectByPropertyValueHandler' );
-const SpecificItemPropertyPairQueryHandler = require( './lib/SpecificItemPropertyPairQueryHandler' );
+const defaultQueryHandlerChain = require( './lib/defaultQueryHandlerChain' );
 
 function getHandlerMatchingQuery( query, handlers ) {
 	for ( const handler of handlers ) {
@@ -29,12 +27,6 @@ function getHandlerMatchingQuery( query, handlers ) {
 	return 'default';
 }
 
-const handlers = [
-	new SpecificItemPropertyPairQueryHandler(),
-	new OptimizingHandler(),
-	new SubjectByPropertyValueHandler(),
-];
-
 const rd = readline.createInterface( {
 	input: fs.createReadStream( process.argv[ 2 ] ),
 	output: process.stdout,
@@ -45,7 +37,7 @@ const matchCounts = {};
 rd.on( 'line', ( line ) => {
 	const csvParts = line.split( ',' );
 	const query = decodeURIComponent( csvParts[ csvParts.length - 1 ].replace( /\+/g, '%20' ) );
-	const handlerForQuery = getHandlerMatchingQuery( query, handlers );
+	const handlerForQuery = getHandlerMatchingQuery( query, defaultQueryHandlerChain.queryHandlers );
 
 	matchCounts[ handlerForQuery ] = ( matchCounts[ handlerForQuery ] || 0 ) + 1;
 } );

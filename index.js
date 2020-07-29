@@ -4,19 +4,10 @@ const http = require( 'http' );
 const https = require( 'https' );
 const process = require( 'process' );
 
-const OptimizingHandler = require( './lib/OptimizingHandler' );
-const QueryHandlerChain = require( './lib/QueryHandlerChain' );
-const SpecificItemPropertyPairQueryHandler = require( './lib/SpecificItemPropertyPairQueryHandler' );
+const defaultQueryHandlerChain = require( './lib/defaultQueryHandlerChain' );
 const stats = require( './lib/stats' );
-const SubjectByPropertyValueHandler = require( './lib/SubjectByPropertyValueHandler' );
 
 const port = process.argv[ 2 ] || 8080;
-
-const queryHandlerChain = new QueryHandlerChain( [
-	new SpecificItemPropertyPairQueryHandler(),
-	new OptimizingHandler(),
-	new SubjectByPropertyValueHandler(),
-] );
 
 function isJsonType( mimeType ) {
 	switch ( mimeType ) {
@@ -31,7 +22,7 @@ const server = http.createServer( function ( clientRequest, clientResponse ) {
 	if ( clientRequest.method === 'GET' && isJsonType( clientRequest.headers.accept ) ) {
 		const url = new URL( clientRequest.url, 'http://localhost' );
 		if ( url.pathname === '/sparql' && url.searchParams.has( 'query' ) ) {
-			const result = queryHandlerChain.getResult( url.searchParams.get( 'query' ) );
+			const result = defaultQueryHandlerChain.getResult( url.searchParams.get( 'query' ) );
 			stats.incrementCounter( `handler.result.${result.constructor.name}` );
 			result.respond( clientRequest, clientResponse );
 			return;
