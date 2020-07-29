@@ -7,14 +7,14 @@ const parser = require( './lib/sparqlParser' );
 const defaultQueryHandlerChain = require( './lib/defaultQueryHandlerChain' );
 
 function getHandlerMatchingQuery( query, handlers ) {
-	for ( const handler of handlers ) {
-		let parsedQuery;
-		try {
-			parsedQuery = parser.parse( query );
-		} catch ( _e ) {
-			return 'parseError';
-		}
+	let parsedQuery;
+	try {
+		parsedQuery = parser.parse( query );
+	} catch ( _e ) {
+		return 'parseError';
+	}
 
+	for ( const handler of handlers ) {
 		try {
 			if ( handler.handle( query, parsedQuery ) ) {
 				return handler.constructor.name;
