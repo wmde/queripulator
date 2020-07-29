@@ -54,10 +54,10 @@ const server = http.createServer( function ( clientRequest, clientResponse ) {
 					...extraResponseHeaders,
 				},
 			);
-			wdqsResponse.pipe( clientResponse, { end: true } );
+			wdqsResponse.pipe( clientResponse );
 		},
 	);
-	clientRequest.pipe( wdqsRequest, { end: true } );
+	clientRequest.pipe( wdqsRequest );
 } );
 
 process.on( 'SIGTERM', () => {
