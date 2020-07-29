@@ -1,14 +1,12 @@
 'use strict';
 
-const SparqlParser = require( 'sparqljs' ).Parser;
-const { allNamespaces } = require( '../lib/rdfNamespaces' );
+const parser = require( '../lib/sparqlParser' );
 const OptimizingHandler = require( '../lib/OptimizingHandler' );
 const WdqsRequest = require( '../lib/WdqsRequest' );
 
 describe( 'OptimizingHandler', () => {
 
 	const handler = new OptimizingHandler();
-	const parser = new SparqlParser( { prefixes: allNamespaces } );
 
 	it.each( [
 		'ASK {}',

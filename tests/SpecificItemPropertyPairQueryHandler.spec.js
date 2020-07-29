@@ -1,13 +1,10 @@
 'use strict';
 
-const SparqlParser = require( 'sparqljs' ).Parser;
-const { allNamespaces } = require( '../lib/rdfNamespaces' );
+const parser = require( '../lib/sparqlParser' );
 const SpecificItemPropertyPairQueryHandler = require( '../lib/SpecificItemPropertyPairQueryHandler' );
 const WdqsRequest = require( '../lib/WdqsRequest' );
 
 describe( 'SpecificItemPropertyPairQueryHandler', () => {
-
-	const parser = new SparqlParser( { prefixes: allNamespaces } );
 
 	it( 'handles queries with a single triple for values of a specific item property pair', () => {
 		const query = 'SELECT ?values { wd:Q42 wdt:P31 ?values. }';

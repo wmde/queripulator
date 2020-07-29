@@ -1,13 +1,10 @@
 'use strict';
 
-const SparqlParser = require( 'sparqljs' ).Parser;
-const { allNamespaces } = require( '../lib/rdfNamespaces' );
+const parser = require( '../lib/sparqlParser' );
 const SubjectByPropertyValueHandler = require( '../lib/SubjectByPropertyValueHandler' );
 const CirrusSearchRequest = require( '../lib/CirrusSearchRequest' );
 
 describe( 'SubjectByPropertyValueHandler', () => {
-
-	const parser = new SparqlParser( { prefixes: allNamespaces } );
 
 	it.each( [
 		[ 'ASK {}' ],
