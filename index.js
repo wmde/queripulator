@@ -18,7 +18,6 @@ function isJsonType( mimeType ) {
 }
 
 const server = http.createServer( function ( clientRequest, clientResponse ) {
-	const extraResponseHeaders = {};
 	if ( clientRequest.method === 'GET' && isJsonType( clientRequest.headers.accept ) ) {
 		const url = new URL( clientRequest.url, 'http://localhost' );
 		if ( url.pathname === '/sparql' && url.searchParams.has( 'query' ) ) {
@@ -49,10 +48,7 @@ const server = http.createServer( function ( clientRequest, clientResponse ) {
 		function ( wdqsResponse ) {
 			clientResponse.writeHead(
 				wdqsResponse.statusCode,
-				{
-					...wdqsResponse.headers,
-					...extraResponseHeaders,
-				},
+				wdqsResponse.headers,
 			);
 			wdqsResponse.pipe( clientResponse );
 		},
