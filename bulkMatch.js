@@ -34,16 +34,34 @@ const rd = readline.createInterface( {
 	terminal: false,
 } );
 const handlers = defaultQueryHandlerChain.queryHandlers;
+const handlerStats = {};
 
-const matchCounts = {};
 rd.on( 'line', ( line ) => {
-	const csvParts = line.split( ',' );
-	const query = decodeURIComponent( csvParts[ csvParts.length - 1 ].replace( /\+/g, '%20' ) );
+	const [ count_, averageTime_, encodedQuery ] = line.split( ',' );
+	if ( count_ === 'count' ) {
+		return; // header line
+	}
+	const count = parseInt( count_ );
+	const averageTime = parseFloat( averageTime_ );
+	const query = decodeURIComponent( encodedQuery.replace( /\+/g, '%20' ) );
 	const handlerForQuery = getHandlerMatchingQuery( query, handlers );
 
-	matchCounts[ handlerForQuery ] = ( matchCounts[ handlerForQuery ] || 0 ) + 1;
+	if ( !( handlerForQuery in handlerStats ) ) {
+		handlerStats[ handlerForQuery ] = { distinct: 0, count: 0, time: 0 };
+	}
+	handlerStats[ handlerForQuery ].distinct++;
+	handlerStats[ handlerForQuery ].count += count;
+	handlerStats[ handlerForQuery ].time += count * averageTime;
 } );
 
 rd.on( 'close', () => {
-	console.log( matchCounts );
+	const total = Object.values( handlerStats )
+		.reduce( ( acc, stats ) => {
+			acc.distinct += stats.distinct;
+			acc.count += stats.count;
+			acc.time += stats.time;
+			return acc;
+		}, { distinct: 0, count: 0, time: 0 } );
+	handlerStats[ 'total' ] = total;
+	console.log( handlerStats );
 } );
