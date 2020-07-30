@@ -16,8 +16,9 @@ function getHandlerMatchingQuery( query, handlers ) {
 
 	for ( const handler of handlers ) {
 		try {
-			if ( handler.handle( query, parsedQuery ) ) {
-				return handler.constructor.name;
+			const request = handler.handle( query, parsedQuery );
+			if ( request ) {
+				return request.constructor.name;
 			}
 		} catch ( _e ) {
 			return 'handlerError';
