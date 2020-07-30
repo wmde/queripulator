@@ -6,7 +6,7 @@ const readline = require( 'readline' );
 const parser = require( './lib/sparqlParser' );
 const defaultQueryHandlerChain = require( './lib/defaultQueryHandlerChain' );
 
-function getHandlerMatchingQuery( query, handlers ) {
+function getResultForQuery( query, handlers ) {
 	let parsedQuery;
 	try {
 		parsedQuery = parser.parse( query );
@@ -34,7 +34,7 @@ const rd = readline.createInterface( {
 	terminal: false,
 } );
 const handlers = defaultQueryHandlerChain.queryHandlers;
-const handlerStats = {};
+const resultStats = {};
 
 rd.on( 'line', ( line ) => {
 	const [ count_, averageTime_, encodedQuery ] = line.split( ',' );
@@ -44,24 +44,24 @@ rd.on( 'line', ( line ) => {
 	const count = parseInt( count_ );
 	const averageTime = parseFloat( averageTime_ );
 	const query = decodeURIComponent( encodedQuery.replace( /\+/g, '%20' ) );
-	const handlerForQuery = getHandlerMatchingQuery( query, handlers );
+	const resultForQuery = getResultForQuery( query, handlers );
 
-	if ( !( handlerForQuery in handlerStats ) ) {
-		handlerStats[ handlerForQuery ] = { distinct: 0, count: 0, time: 0 };
+	if ( !( resultForQuery in resultStats ) ) {
+		resultStats[ resultForQuery ] = { distinct: 0, count: 0, time: 0 };
 	}
-	handlerStats[ handlerForQuery ].distinct++;
-	handlerStats[ handlerForQuery ].count += count;
-	handlerStats[ handlerForQuery ].time += count * averageTime;
+	resultStats[ resultForQuery ].distinct++;
+	resultStats[ resultForQuery ].count += count;
+	resultStats[ resultForQuery ].time += count * averageTime;
 } );
 
 rd.on( 'close', () => {
-	const total = Object.values( handlerStats )
+	const total = Object.values( resultStats )
 		.reduce( ( acc, stats ) => {
 			acc.distinct += stats.distinct;
 			acc.count += stats.count;
 			acc.time += stats.time;
 			return acc;
 		}, { distinct: 0, count: 0, time: 0 } );
-	handlerStats[ 'total' ] = total;
-	console.log( handlerStats );
+	resultStats[ 'total' ] = total;
+	console.log( resultStats );
 } );
