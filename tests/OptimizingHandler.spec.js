@@ -42,13 +42,7 @@ describe( 'OptimizingHandler', () => {
 	] )( 'optimizes %s into %s', ( query, expected ) => {
 		const result = handler.handle( query, parser.parse( query ) );
 		expect( result ).toBeInstanceOf( OptimizedWdqsRequest );
-
-		let actual = result.query;
-		actual = actual.replace( /^PREFIX .*$/gm, '' );
-		actual = actual.replace( /\s+/g, ' ' );
-		actual = actual.trim();
-
-		expect( actual ).toBe( expected );
+		expect( result.query.replace( /\s+/g, ' ' ) ).toBe( expected );
 	} );
 
 	it( 'does not modify the input parsedQuery', () => {
