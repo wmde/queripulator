@@ -62,6 +62,6 @@ rd.on( 'close', () => {
 			acc.time += stats.time;
 			return acc;
 		}, { distinct: 0, count: 0, time: 0 } );
-	resultStats[ 'total' ] = total;
+	resultStats.total = total;
 	console.log( resultStats );
 } );
