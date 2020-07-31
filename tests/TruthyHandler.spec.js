@@ -11,7 +11,6 @@ describe( 'TruthyHandler', () => {
 	it.each( [
 		'SELECT * WHERE { ?item wdt:P31 wd:Q5; wdt:P19 wd:Q146. }',
 		'SELECT * WHERE { ?item wdt:P31 wd:Q5; a wdno:P570. }',
-		'ASK { ?s ?p ?o. }',
 	] )( 'detects query as truthy: %s', ( query ) => {
 		expect( handler.handle( query, parser.parse( query ) ) )
 			.toBeInstanceOf( TruthyWdqsRequest );
@@ -20,6 +19,8 @@ describe( 'TruthyHandler', () => {
 	it.each( [
 		'SELECT * WHERE { ?item p:P31/ps:P31 wd:Q486972. }',
 		'SELECT * WHERE { ?item p:P39 [ ps:P39 wd:Q11696; pq:P2715 wd:Q45578 ]. }',
+		'SELECT (COUNT(*) AS ?c) WHERE { ?property wikibase:claim ?p. ?item ?p ?statement. }',
+		'SELECT * WHERE { ?item ?p [ ?ps wd:Q109411 ]. }',
 		'SELECT * WHERE { { OPTIONAL { ?item p:P31/ps:P31 wd:Q486972. } } UNION {} }',
 		`
 SELECT ?item ?itemLabel WHERE {
