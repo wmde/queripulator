@@ -2,7 +2,7 @@
 
 const parser = require( '../lib/sparqlParser' );
 const SubjectByPropertyAnyValueHandler = require( '../lib/SubjectByPropertyAnyValueHandler' );
-const CirrusSearchRequest = require( '../lib/CirrusSearchRequest' );
+const PropertyCirrusSearchRequest = require( '../lib/PropertyCirrusSearchRequest' );
 
 describe( 'SubjectByPropertyAnyValueHandler', () => {
 
@@ -26,7 +26,7 @@ describe( 'SubjectByPropertyAnyValueHandler', () => {
 	] )( 'creates a CirrusSearchRequest from query: %s', ( query ) => {
 		const handler = new SubjectByPropertyAnyValueHandler();
 		expect( handler.handle( query, parser.parse( query ) ) )
-			.toBeInstanceOf( CirrusSearchRequest );
+			.toBeInstanceOf( PropertyCirrusSearchRequest );
 	} );
 
 } );
