@@ -4,7 +4,7 @@ This is a prototype for a “query manipulator” for the [Wikidata Query Servic
 It hosts an HTTP server (by default on port 8080) which proxies requests to query.wikidata.org.
 When it receives a SPARQL query request, it tries to find a matching *handler*
 (the handlers are defined in [lib/defaultQueryHandlerChain.js](lib/defaultQueryHandlerChain.js));
-if it finds one, then than handler will take over the request,
+if it finds one, then that handler will take over the request,
 otherwise the request is sent unmodified to query.wikidata.org just like all non-query requests.
 
 Installed handlers include:
