@@ -1,3 +1,5 @@
+Prototype from 2020, no longer developed.
+
 # Queripulator
 
 This is a prototype for a “query manipulator” for the [Wikidata Query Service][Help:SPARQL].
